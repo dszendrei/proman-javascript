@@ -76,6 +76,13 @@ let sampleData = {
             "board_id": 2,
             "status_id": 3,
             "order": 1
+        },
+        {
+            "id": 7,
+            "title": "task7",
+            "board_id": 1,
+            "status_id": 1,
+            "order": 3
         }
     ]
 };

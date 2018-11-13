@@ -68,6 +68,7 @@ let dom = {
             statusDiv.setAttribute('class', 'col status');
             statusDiv.setAttribute('id', 'status_'+status.id);
             statusDiv.setAttribute('data-row-id', boardId.replace('board_', ''));
+            statusDiv.setAttribute('onclick', 'event.stopPropagation()');
             statusDiv.innerHTML = status.name;
             row.appendChild(statusDiv);
             }
