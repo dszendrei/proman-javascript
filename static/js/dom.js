@@ -68,7 +68,7 @@ let dom = {
             statusDiv.setAttribute('class', 'col status');
             statusDiv.setAttribute('id', 'status_'+status.id);
             statusDiv.setAttribute('data-row-id', boardId.replace('board_', ''));
-            statusDiv.setAttribute('onclick', 'event.stopPropagation()');
+            // statusDiv.setAttribute('onclick', 'event.stopPropagation()');
             statusDiv.innerHTML = status.name;
             row.appendChild(statusDiv);
             }
@@ -80,7 +80,7 @@ let dom = {
         if (dropped === 'false'){
             dom.loadStatuses(this.id.replace('board_', ''));
             dom.loadCards(this.id.replace('board_', ''));
-        } else {
+        } else if (event.target.parentElement.id === "boards") {
             dom.hideCards(this.id.replace('board_', ''));
         }
 
