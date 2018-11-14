@@ -8,25 +8,7 @@ let dom = {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
         let boardsDiv = document.getElementById('boards');
-        let divByNewBoard = document.createElement("div");
-        divByNewBoard.setAttribute("class", "input-group mb-3 container");
-        boardsDiv.appendChild(divByNewBoard);
-        let input = document.createElement("input");
-        input.setAttribute("type", "text");
-        input.setAttribute("class", "form-control");
-        input.setAttribute("placeholder", "Add new board");
-        input.setAttribute("aria-label", "Add new board");
-        input.setAttribute("aria-describedby", "basic-addon2");
-        divByNewBoard.appendChild(input);
-        let buttonDiv = document.createElement("div");
-        buttonDiv.setAttribute("class", "input-group-append");
-        divByNewBoard.appendChild(buttonDiv);
-        let btn = document.createElement("button");
-        btn.setAttribute("class", "btn btn-outline-secondary");
-        btn.setAttribute("type", "button");
-        btn.innerHTML = "Add";
-        buttonDiv.appendChild(btn);
-        btn.addEventListener("click", dom.addBoard);
+        dom.createInput('boards', dom.addBoard);
         for (let board of boards){
             let divByBoard = document.createElement("div");
             divByBoard.setAttribute('id', 'board_'+board.id);
@@ -85,7 +67,7 @@ let dom = {
         row.setAttribute('class', 'row');
         row.setAttribute('id', 'row_'+boardId.replace('board_', ''));
         board.appendChild(row);
-        for (let status of statuses){
+        for (let status of statuses) {
             let statusDiv = document.createElement('div');
             statusDiv.setAttribute('class', 'col status');
             statusDiv.setAttribute('id', 'status_'+status.id);
@@ -141,5 +123,27 @@ let dom = {
         let body = document.getElementsByTagName("BODY")[0];
         body.appendChild(mainBoardDiv);
         dom.loadBoards();
+    },
+    createInput: function (parentId, event) {
+        let parentDiv = document.getElementById(parentId);
+        let divByNewElement = document.createElement("div");
+        divByNewElement.setAttribute("class", "input-group mb-3 container");
+        parentDiv.appendChild(divByNewElement);
+        let input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.setAttribute("class", "form-control");
+        input.setAttribute("placeholder", "Add new board");
+        input.setAttribute("aria-label", "Add new board");
+        input.setAttribute("aria-describedby", "basic-addon2");
+        divByNewElement.appendChild(input);
+        let buttonDiv = document.createElement("div");
+        buttonDiv.setAttribute("class", "input-group-append");
+        divByNewElement.appendChild(buttonDiv);
+        let btn = document.createElement("button");
+        btn.setAttribute("class", "btn btn-outline-secondary");
+        btn.setAttribute("type", "button");
+        btn.innerHTML = "Add";
+        buttonDiv.appendChild(btn);
+        btn.addEventListener("click", event);
     }
 };
