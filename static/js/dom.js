@@ -8,6 +8,25 @@ let dom = {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
         let boardsDiv = document.getElementById('boards');
+        let divByNewBoard = document.createElement("div");
+        divByNewBoard.setAttribute("class", "input-group mb-3 container");
+        boardsDiv.appendChild(divByNewBoard);
+        let input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.setAttribute("class", "form-control");
+        input.setAttribute("placeholder", "Add new board");
+        input.setAttribute("aria-label", "Add new board");
+        input.setAttribute("aria-describedby", "basic-addon2");
+        divByNewBoard.appendChild(input);
+        let buttonDiv = document.createElement("div");
+        buttonDiv.setAttribute("class", "input-group-append");
+        divByNewBoard.appendChild(buttonDiv);
+        let btn = document.createElement("button");
+        btn.setAttribute("class", "btn btn-outline-secondary");
+        btn.setAttribute("type", "button");
+        btn.innerHTML = "Add";
+        buttonDiv.appendChild(btn);
+        btn.addEventListener("click", dom.addBoard);
         for (let board of boards){
             let divByBoard = document.createElement("div");
             divByBoard.setAttribute('id', 'board_'+board.id);
@@ -16,6 +35,7 @@ let dom = {
             boardsDiv.appendChild(divByBoard);
             divByBoard.innerHTML = board.title;
             divByBoard.addEventListener("click", dom.dropping);
+
         }
 
     },
@@ -110,5 +130,16 @@ let dom = {
             }).on('out', function (el, container) {
                 container.className = container.className.replace('ex-over', '');
             });
+    },
+    addBoard: function () {
+        let title = event.target.parentElement.previousElementSibling.value;
+        dataHandler.saveNewBoard(title);
+        let board = document.getElementById("boards");
+        board.remove();
+        let mainBoardDiv = document.createElement('div');
+        mainBoardDiv.setAttribute('id', 'boards');
+        let body = document.getElementsByTagName("BODY")[0];
+        body.appendChild(mainBoardDiv);
+        dom.loadBoards();
     }
 };

@@ -66,5 +66,25 @@ let dataHandler = {
             }
         }
         this._saveData();
+    },
+    saveNewBoard: function (title) {
+        let boardId = 0;
+        let nameNotTaken = true;
+        for (let board of this._data.boards) {
+            if (boardId <= board.id) {
+                boardId = board.id;
+            }
+            if (title === board.title) {
+                nameNotTaken = false;
+            }
+        }
+        boardId += 1;
+        if (nameNotTaken) {
+            let newBoard = {id: boardId, title: title, is_active: true};
+            this._data.boards.push(newBoard);
+            this._saveData();
+        } else {
+            alert('Title already exists');
+        }
     }
 };
