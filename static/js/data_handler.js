@@ -86,5 +86,17 @@ let dataHandler = {
         } else {
             alert('Title already exists');
         }
+    },
+    saveDroppedStatus: function (boardId, dropped) {
+        for (let board of this._data.boards) {
+            if (boardId === String(board.id)) {
+                if (dropped) {
+                    board.is_active = true;
+                } else {
+                    board.is_active = false;
+                }
+            }
+        }
+        this._saveData();
     }
 };

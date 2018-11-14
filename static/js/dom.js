@@ -27,16 +27,18 @@ let dom = {
         btn.innerHTML = "Add";
         buttonDiv.appendChild(btn);
         btn.addEventListener("click", dom.addBoard);
-        for (let board of boards){
+        for (let board of boards) {
             let divByBoard = document.createElement("div");
-            divByBoard.setAttribute('id', 'board_'+board.id);
+            divByBoard.setAttribute('id', 'board_' + board.id);
             divByBoard.setAttribute('class', 'container');
             divByBoard.setAttribute('data-dropped', 'false');
             boardsDiv.appendChild(divByBoard);
             divByBoard.innerHTML = board.title;
             divByBoard.addEventListener("click", dom.dropping);
-
-        }
+            if (board.is_active) {
+                divByBoard.click();
+                }
+            }
 
     },
     loadCards: function (boardId) {
@@ -102,8 +104,10 @@ let dom = {
             dom.loadStatuses(this.id.replace('board_', ''));
             dom.loadCards(this.id.replace('board_', ''));
             dom.placeDagula();
+            dataHandler.saveDroppedStatus(this.id.replace('board_', ''), true);
         } else if (event.target.parentElement.id === "boards") {
             dom.hideCards(this.id.replace('board_', ''));
+            dataHandler.saveDroppedStatus(this.id.replace('board_', ''), false);
         }
 
     },
