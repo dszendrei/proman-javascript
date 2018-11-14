@@ -33,6 +33,8 @@ let dom = {
             let status = event.target.childNodes[1].childNodes[card.status_id-1];
             let cardDiv = document.createElement('div');
             cardDiv.setAttribute('class', 'card');
+            cardDiv.setAttribute('id', 'card_' + card.id);
+            cardDiv.setAttribute('data-order', card.order);
             cardDiv.innerHTML = card.title;
             status.appendChild(cardDiv);
         }
@@ -68,7 +70,6 @@ let dom = {
             statusDiv.setAttribute('class', 'col status');
             statusDiv.setAttribute('id', 'status_'+status.id);
             statusDiv.setAttribute('data-row-id', boardId.replace('board_', ''));
-            // statusDiv.setAttribute('onclick', 'event.stopPropagation()');
             statusDiv.innerHTML = status.name;
             row.appendChild(statusDiv);
             }
@@ -80,6 +81,7 @@ let dom = {
         if (dropped === 'false'){
             dom.loadStatuses(this.id.replace('board_', ''));
             dom.loadCards(this.id.replace('board_', ''));
+            dom.placeDagula();
         } else if (event.target.parentElement.id === "boards") {
             dom.hideCards(this.id.replace('board_', ''));
         }
@@ -91,5 +93,22 @@ let dom = {
         row.remove();
         let board = document.getElementById('board_'+boardId);
         board.dataset.dropped = 'false';
+    },
+    placeDagula: function () {
+        let statuses = Array.from(event.target.firstElementChild.childNodes);
+        dragula(statuses)
+            .on('drag', function (el) {
+                el.className = el.className.replace('ex-moved', '');
+            }).on('drop', function (el) {
+                el.className += ' ex-moved';
+                let cardId = event.target.id;
+                let statusId = document.getElementById(cardId).parentElement.id;
+                let order = event.target.dataset.order;
+                dataHandler.saveCard(cardId, statusId, order);
+            }).on('over', function (el, container) {
+                container.className += ' ex-over';
+            }).on('out', function (el, container) {
+                container.className = container.className.replace('ex-over', '');
+            });
     }
 };
