@@ -117,17 +117,12 @@ let dom = {
                 el.className += ' ex-moved';
                 let cardId = event.target.id;
                 let statusId = document.getElementById(cardId).parentElement.id;
-                // let order = event.target.dataset.order;
                 dataHandler.saveCard(cardId, statusId);
             }).on('over', function (el, container) {
                 container.className += ' ex-over';
             }).on('out', function (el, container) {
                 container.className = container.className.replace('ex-over', '');
             }).on('dragend', function (el) {
-                console.log(event.target);
-                console.log('');
-                let cucc = el;
-                console.log(el);
                 dataHandler.saveCards()
         });
     },
