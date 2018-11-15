@@ -94,10 +94,12 @@ let dataHandler = {
             }
         }
         boardId += 1;
-        if (nameNotTaken) {
+        if (nameNotTaken && title) {
             let newBoard = {id: boardId, title: title, is_active: true};
             this._data.boards.push(newBoard);
             this._saveData();
+        } else if (!title) {
+            alert('Add title');
         } else {
             alert('Title already exists');
         }
