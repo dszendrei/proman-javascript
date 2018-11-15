@@ -82,6 +82,14 @@ let dataHandler = {
             this._saveData();
         }
     },
+    deleteCard: function (cardId) {
+        for (let i = 0; i < this._data.cards.length-1; i++) {
+            if (String(this._data.cards[i].id) === cardId.replace('card_', '')) {
+                this._data.cards.splice(i, 1);;
+            }
+        }
+        this._saveData();
+    },
     saveNewBoard: function (title) {
         let boardId = 0;
         let nameNotTaken = true;

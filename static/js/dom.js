@@ -82,6 +82,13 @@ let dom = {
             statusDiv.innerHTML = status.name;
             row.appendChild(statusDiv);
             }
+        let deleteDiv = document.createElement('div');
+        deleteDiv.setAttribute('class', 'col delete');
+        deleteDiv.setAttribute('id', 'delete_'+boardId.replace('board_', ''));
+        row.appendChild(deleteDiv);
+        /*let deleteLogo = document.createElement('i');
+        deleteLogo.setAttribute('class', "fas fa-trash-alt");
+        deleteDiv.appendChild(deleteLogo);*/
         board.dataset.dropped = 'true';
     },
     dropping: function() {
@@ -92,12 +99,24 @@ let dom = {
             dom.loadStatuses(this.id.replace('board_', ''));
             dom.loadCards(this.id.replace('board_', ''));
             dom.placeDagula();
+            dom.addDeleteLogo(this.id);
             dataHandler.saveDroppedStatus(this.id.replace('board_', ''), true);
         } else if (event.target.parentElement.id === "boards") {
             dom.hideCards(this.id.replace('board_', ''));
             dataHandler.saveDroppedStatus(this.id.replace('board_', ''), false);
         }
 
+    },
+    addDeleteLogo: function (boardId) {
+        let deleteCols = document.getElementsByClassName('delete');
+        console.log(deleteCols);
+        for (let deleteCol of deleteCols) {
+            if (deleteCol.id.replace('delete_', '') === boardId.replace('board_', '')) {
+                let deleteLogo = document.createElement('i');
+                deleteLogo.setAttribute('class', "fas fa-trash-alt");
+                deleteCol.appendChild(deleteLogo);
+            }
+        }
     },
     hideCards: function(boardId) {
         let rowId = 'row_' + boardId;
@@ -111,20 +130,24 @@ let dom = {
     placeDagula: function () {
         let statuses = Array.from(event.target.lastElementChild.childNodes);
         dragula(statuses)
-            .on('drag', function (el) {
-                el.className = el.className.replace('ex-moved', '');
-            }).on('drop', function (el) {
-                el.className += ' ex-moved';
+            .on('drop', function (el, target, source, sibling) {
                 let cardId = event.target.id;
                 let statusId = document.getElementById(cardId).parentElement.id;
-                dataHandler.saveCard(cardId, statusId);
-            }).on('over', function (el, container) {
-                container.className += ' ex-over';
-            }).on('out', function (el, container) {
-                container.className = container.className.replace('ex-over', '');
+                if (statusId.slice(0, 3) === 'del') {
+                    let confirmation = confirm("Do you want to delete this card?")
+                    if (confirmation) {
+                        dataHandler.deleteCard(cardId);
+                        el.remove();
+                    } else {
+                        dom.rebuild();
+                    }
+                } else {
+                    dataHandler.saveCard(cardId, statusId);
+                }
             }).on('dragend', function (el) {
                 dataHandler.saveCards()
         });
+
     },
     addBoard: function () {
         let title = event.target.parentElement.previousElementSibling.value;
@@ -163,6 +186,9 @@ let dom = {
         let title = event.target.parentElement.previousElementSibling.value;
         let boardId = Number(event.target.parentElement.parentElement.parentElement.id.replace('board_', ''));
         dataHandler.saveNewCard(title, boardId);
+        dom.rebuild();
+    },
+    rebuild: function () {
         let board = document.getElementById("boards");
         board.remove();
         let mainBoardDiv = document.createElement('div');

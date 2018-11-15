@@ -48,3 +48,15 @@ body {
 .card:hover {
     background-color: rgba(192,206,221,0.92);
 }
+
+.delete {
+    vertical-align: middle;
+    text-align: center;
+    font-size: xx-large;
+}
+
+.fa-trash-alt {
+    position: relative;
+    top: 43%;
+    vertical-align: middle;
+}
