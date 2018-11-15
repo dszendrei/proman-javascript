@@ -86,9 +86,6 @@ let dom = {
         deleteDiv.setAttribute('class', 'col delete');
         deleteDiv.setAttribute('id', 'delete_'+boardId.replace('board_', ''));
         row.appendChild(deleteDiv);
-        /*let deleteLogo = document.createElement('i');
-        deleteLogo.setAttribute('class', "fas fa-trash-alt");
-        deleteDiv.appendChild(deleteLogo);*/
         board.dataset.dropped = 'true';
     },
     dropping: function() {
@@ -109,7 +106,6 @@ let dom = {
     },
     addDeleteLogo: function (boardId) {
         let deleteCols = document.getElementsByClassName('delete');
-        console.log(deleteCols);
         for (let deleteCol of deleteCols) {
             if (deleteCol.id.replace('delete_', '') === boardId.replace('board_', '')) {
                 let deleteLogo = document.createElement('i');
@@ -130,7 +126,11 @@ let dom = {
     placeDagula: function () {
         let statuses = Array.from(event.target.lastElementChild.childNodes);
         dragula(statuses)
-            .on('drop', function (el, target, source, sibling) {
+            .on('drag', function (el, source) {
+                if (source.className === 'col delete') {
+                    dom.rebuild();
+                }
+            }).on('drop', function (el, target, source, sibling) {
                 let cardId = event.target.id;
                 let statusId = document.getElementById(cardId).parentElement.id;
                 if (statusId.slice(0, 3) === 'del') {
