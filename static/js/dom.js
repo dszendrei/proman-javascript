@@ -26,20 +26,26 @@ let dom = {
         // retrieves cards and makes showCards called
         dataHandler.getCardsByBoardId(boardId, this.showCards);
     },
-    showCards: function (cards) {
+    showCards: function (cards, numberOfCards) {
 
         // shows the cards of a board
         // it adds necessary event listeners also
         let rowId = event.target.id.replace('board_', 'row_');
         let row = document.getElementById(rowId);
-        for (let card of cards) {
-            let status = event.target.childNodes[2].childNodes[card.status_id-1];
-            let cardDiv = document.createElement('div');
-            cardDiv.setAttribute('class', 'card');
-            cardDiv.setAttribute('id', 'card_' + card.id);
-            cardDiv.setAttribute('data-order', card.order);
-            cardDiv.innerHTML = card.title;
-            status.appendChild(cardDiv);
+        let order = 0;
+        for (let i = 0; i < numberOfCards; i++) {
+            order += 1;
+            for (let card of cards) {
+                if (card.order === order){
+                    let status = event.target.childNodes[2].childNodes[card.status_id-1];
+                    let cardDiv = document.createElement('div');
+                    cardDiv.setAttribute('class', 'card');
+                    cardDiv.setAttribute('id', 'card_' + card.id);
+                    cardDiv.setAttribute('data-order', card.order);
+                    cardDiv.innerHTML = card.title;
+                    status.appendChild(cardDiv);
+                }
+            }
         }
     },
     appendToElement: function (elementToExtend, textToAppend, prepend = false) {
@@ -111,13 +117,19 @@ let dom = {
                 el.className += ' ex-moved';
                 let cardId = event.target.id;
                 let statusId = document.getElementById(cardId).parentElement.id;
-                let order = event.target.dataset.order;
-                dataHandler.saveCard(cardId, statusId, order);
+                // let order = event.target.dataset.order;
+                dataHandler.saveCard(cardId, statusId);
             }).on('over', function (el, container) {
                 container.className += ' ex-over';
             }).on('out', function (el, container) {
                 container.className = container.className.replace('ex-over', '');
-            });
+            }).on('dragend', function (el) {
+                console.log(event.target);
+                console.log('');
+                let cucc = el;
+                console.log(el);
+                dataHandler.saveCards()
+        });
     },
     addBoard: function () {
         let title = event.target.parentElement.previousElementSibling.value;

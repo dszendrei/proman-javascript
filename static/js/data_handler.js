@@ -40,13 +40,14 @@ let dataHandler = {
     },
     getCardsByBoardId: function (boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
+        let numberOfCards = this._data.cards.length;
         let cards = [];
         for (let card of this._data.cards){
             if (card.board_id === parseInt(boardId)){
                 cards.push(card);
             }
         }
-        callback(cards);
+        callback(cards, numberOfCards);
     },
     getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
@@ -66,6 +67,20 @@ let dataHandler = {
             }
         }
         this._saveData();
+    },
+    saveCards: function () {
+        let cards = document.getElementsByClassName('card');
+        let order = 0;
+        for (let oneOfTheCards of cards) {
+            order += 1;
+            for (let card of this._data.cards) {
+                if (String(card.id) === oneOfTheCards.id.replace('card_', '')) {
+                    card.status_id = Number(oneOfTheCards.parentElement.id.replace('status_', ''));
+                    card.order = order;
+                }
+            }
+            this._saveData();
+        }
     },
     saveNewBoard: function (title) {
         let boardId = 0;
