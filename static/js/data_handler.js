@@ -87,6 +87,26 @@ let dataHandler = {
             alert('Title already exists');
         }
     },
+    saveNewCard: function (title, boardId) {
+        let cardId = 0;
+        let nameNotTaken = true;
+        for (let card of this._data.cards) {
+            if (cardId <= card.id) {
+                cardId = card.id;
+            }
+            if (title === card.title && boardId === card.board_id) {
+                nameNotTaken = false;
+            }
+        }
+        cardId += 1;
+        if (nameNotTaken) {
+            let newCard = {id: cardId, title: title, board_id: boardId, status_id: 1, order: 1};
+            this._data.cards.push(newCard);
+            this._saveData();
+        } else {
+            alert('Title already exists');
+        }
+    },
     saveDroppedStatus: function (boardId, dropped) {
         for (let board of this._data.boards) {
             if (boardId === String(board.id)) {

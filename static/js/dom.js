@@ -8,7 +8,7 @@ let dom = {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
         let boardsDiv = document.getElementById('boards');
-        dom.createInput('boards', dom.addBoard);
+        dom.createInput('boards', dom.addBoard, 'board');
         for (let board of boards){
             let divByBoard = document.createElement("div");
             divByBoard.setAttribute('id', 'board_' + board.id);
@@ -33,7 +33,7 @@ let dom = {
         let rowId = event.target.id.replace('board_', 'row_');
         let row = document.getElementById(rowId);
         for (let card of cards) {
-            let status = event.target.childNodes[1].childNodes[card.status_id-1];
+            let status = event.target.childNodes[2].childNodes[card.status_id-1];
             let cardDiv = document.createElement('div');
             cardDiv.setAttribute('class', 'card');
             cardDiv.setAttribute('id', 'card_' + card.id);
@@ -82,6 +82,7 @@ let dom = {
         let board = document.getElementById(this.id);
         let dropped = board.dataset.dropped;
         if (dropped === 'false'){
+            dom.createInput(this.id, dom.addCard, 'card');
             dom.loadStatuses(this.id.replace('board_', ''));
             dom.loadCards(this.id.replace('board_', ''));
             dom.placeDagula();
@@ -95,12 +96,14 @@ let dom = {
     hideCards: function(boardId) {
         let rowId = 'row_' + boardId;
         let row = document.getElementById(rowId);
+        let input = row.previousSibling;
+        input.remove();
         row.remove();
         let board = document.getElementById('board_'+boardId);
         board.dataset.dropped = 'false';
     },
     placeDagula: function () {
-        let statuses = Array.from(event.target.firstElementChild.childNodes);
+        let statuses = Array.from(event.target.lastElementChild.childNodes);
         dragula(statuses)
             .on('drag', function (el) {
                 el.className = el.className.replace('ex-moved', '');
@@ -127,7 +130,7 @@ let dom = {
         body.appendChild(mainBoardDiv);
         dom.loadBoards();
     },
-    createInput: function (parentId, event) {
+    createInput: function (parentId, event, element) {
         let parentDiv = document.getElementById(parentId);
         let divByNewElement = document.createElement("div");
         divByNewElement.setAttribute("class", "input-group mb-3 container");
@@ -135,8 +138,8 @@ let dom = {
         let input = document.createElement("input");
         input.setAttribute("type", "text");
         input.setAttribute("class", "form-control");
-        input.setAttribute("placeholder", "Add new board");
-        input.setAttribute("aria-label", "Add new board");
+        input.setAttribute("placeholder", "Add new " + element);
+        input.setAttribute("aria-label", "Add new " + element);
         input.setAttribute("aria-describedby", "basic-addon2");
         divByNewElement.appendChild(input);
         let buttonDiv = document.createElement("div");
@@ -148,5 +151,17 @@ let dom = {
         btn.innerHTML = "Add";
         buttonDiv.appendChild(btn);
         btn.addEventListener("click", event);
+    },
+    addCard: function () {
+        let title = event.target.parentElement.previousElementSibling.value;
+        let boardId = Number(event.target.parentElement.parentElement.parentElement.id.replace('board_', ''));
+        dataHandler.saveNewCard(title, boardId);
+        let board = document.getElementById("boards");
+        board.remove();
+        let mainBoardDiv = document.createElement('div');
+        mainBoardDiv.setAttribute('id', 'boards');
+        let body = document.getElementsByTagName("BODY")[0];
+        body.appendChild(mainBoardDiv);
+        dom.loadBoards();
     }
 };
