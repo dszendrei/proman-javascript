@@ -101,3 +101,17 @@ def delete_card(cursor, user_id, card_id):
                     WHERE user_id = %(user_id)s AND id = %(card_id)s;
                     ''',
                    {'user_id': user_id, 'card_id': card_id})
+
+
+@database_common.connection_handler
+def delete_board(cursor, user_id, board_id):
+    cursor.execute('''
+                    DELETE FROM cards
+                    WHERE user_id = %(user_id)s AND board_id = %(board_id)s;
+                    ''',
+                   {'user_id': user_id, 'board_id': board_id})
+    cursor.execute('''
+                    DELETE FROM boards
+                    WHERE user_id = %(user_id)s AND id = %(board_id)s;
+                    ''',
+                   {'user_id': user_id, 'board_id': board_id})
