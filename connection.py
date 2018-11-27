@@ -12,6 +12,7 @@ def select_boards_by_user(cursor, user_id):
     boards = cursor.fetchall()
     return boards
 
+
 @database_common.connection_handler
 def select_cards_by_board(cursor, user_id, board_id):
     cursor.execute('''
@@ -22,3 +23,12 @@ def select_cards_by_board(cursor, user_id, board_id):
                    {'user_id': user_id, 'board_id': board_id})
     cards = cursor.fetchall()
     return cards
+
+
+@database_common.connection_handler
+def insert_new_user(cursor, username, password):
+    cursor.execute("""
+                    INSERT INTO users (username, password)
+                    VALUES (%(username)s, %(password)s); 
+                    """,
+                   {'username': username, 'password': password})
