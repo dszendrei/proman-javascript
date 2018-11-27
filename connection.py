@@ -80,6 +80,15 @@ def update_card_title(cursor, user_id, title, card_id):
 def insert_new_board(cursor, user_id, title, is_active=True):
     cursor.execute('''
                     INSERT INTO boards (title, is_active, user_id)
-                    VALUES (%(title)s, %(is_active)s, %(user_id)s)
+                    VALUES (%(title)s, %(is_active)s, %(user_id)s);
                     ''',
                    {'user_id': user_id, 'title': title, 'is_active': is_active})
+
+
+@database_common.connection_handler
+def insert_new_card(cursor, user_id, title, board_id, status_id=1):
+    cursor.execute('''
+                    INSERT INTO cards (title, status_id, board_id, user_id) 
+                    VALUES (%(title)s, %(status_id)s, %(board_id)s, %(user_id)s);
+                    ''',
+                   {'user_id': user_id, 'title': title, 'status_id': status_id, 'board_id': board_id})
