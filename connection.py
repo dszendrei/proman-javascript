@@ -74,3 +74,12 @@ def update_card_title(cursor, user_id, title, card_id):
                     WHERE user_id = %(user_id)s AND id = %(card_id)s;
                     ''',
                    {'user_id': user_id, 'title': title, 'card_id': card_id})
+
+
+@database_common.connection_handler
+def insert_new_board(cursor, user_id, title, is_active=True):
+    cursor.execute('''
+                    INSERT INTO boards (title, is_active, user_id)
+                    VALUES (%(title)s, %(is_active)s, %(user_id)s)
+                    ''',
+                   {'user_id': user_id, 'title': title, 'is_active': is_active})
