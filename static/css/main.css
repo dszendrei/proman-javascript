@@ -48,3 +48,17 @@ body {
 .card:hover {
     background-color: rgba(192,206,221,0.92);
 }
+
+.delete {
+    position: relative;
+}
+
+.fas {
+    font-size: xx-large;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 30%;
+    width: 50%;
+    margin: -8% 0 0 -25%;
+}
