@@ -32,3 +32,15 @@ def insert_new_user(cursor, username, password):
                     VALUES (%(username)s, %(password)s); 
                     """,
                    {'username': username, 'password': password})
+
+
+@database_common.connection_handler
+def select_user_by_username(cursor, username):
+    cursor.execute("""
+                    SELECT id, username, password
+                    FROM users
+                    WHERE username = %(username)s;
+                    """,
+                    {'username': username})
+    user = cursor.fetchone()
+    return user
