@@ -92,3 +92,12 @@ def insert_new_card(cursor, user_id, title, board_id, status_id=1):
                     VALUES (%(title)s, %(status_id)s, %(board_id)s, %(user_id)s);
                     ''',
                    {'user_id': user_id, 'title': title, 'status_id': status_id, 'board_id': board_id})
+
+
+@database_common.connection_handler
+def delete_card(cursor, user_id, card_id):
+    cursor.execute('''
+                    DELETE FROM cards
+                    WHERE user_id = %(user_id)s AND id = %(card_id)s;
+                    ''',
+                   {'user_id': user_id, 'card_id': card_id})
