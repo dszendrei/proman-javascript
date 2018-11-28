@@ -15,8 +15,13 @@ let dom = {
             divByBoard.setAttribute('class', 'container');
             divByBoard.setAttribute('data-dropped', 'false');
             boardsDiv.appendChild(divByBoard);
-            divByBoard.innerHTML = board.title;
+            boardTitle = document.createElement('span');
+            boardTitle.innerHTML = board.title;
+            divByBoard.appendChild(boardTitle);
             divByBoard.addEventListener("click", dom.dropping);
+            let deleteBtn = document.createElement('span');
+            deleteBtn.setAttribute('class', 'fas fa-trash-alt boardDelete');
+            divByBoard.appendChild(deleteBtn);
             if (board.is_active) {
                 divByBoard.click();
                 }
@@ -37,7 +42,9 @@ let dom = {
             order += 1;
             for (let card of cards) {
                 if (card.order === order){
-                    let status = event.target.childNodes[2].childNodes[card.status_id-1];
+                    let status = event.target.childNodes[3].childNodes[card.status_id-1];
+                    console.log(event.target.childNodes);
+                    console.log(status);
                     let cardDiv = document.createElement('div');
                     cardDiv.setAttribute('class', 'card');
                     cardDiv.setAttribute('id', 'card_' + card.id);
@@ -125,7 +132,7 @@ let dom = {
         for (let deleteCol of deleteCols) {
             if (deleteCol.id.replace('delete_', '') === boardId.replace('board_', '')) {
                 let deleteLogo = document.createElement('i');
-                deleteLogo.setAttribute('class', "fas fa-trash-alt");
+                deleteLogo.setAttribute('class', "fas fa-trash-alt cardDelete");
                 deleteCol.appendChild(deleteLogo);
             }
         }
