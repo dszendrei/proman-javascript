@@ -57,13 +57,14 @@ def update_board(cursor, user_id, board_id, is_active):
 
 
 @database_common.connection_handler
-def update_card_status(cursor, user_id, status_id, card_id):
+def update_card_status(cursor, user_id, status_id, card_id, card_order):
     cursor.execute('''
                     UPDATE cards
-                    SET status_id = %(status_id)s
+                    SET status_id = %(status_id)s,
+                        card_order = %(card_order)s
                     WHERE user_id = %(user_id)s AND id = %(card_id)s;
                     ''',
-                   {'user_id': user_id, 'status_id': status_id, 'card_id': card_id})
+                   {'user_id': user_id, 'status_id': status_id, 'card_id': card_id, 'card_order': card_order})
 
 
 @database_common.connection_handler
