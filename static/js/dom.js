@@ -42,11 +42,27 @@ let dom = {
                     cardDiv.setAttribute('class', 'card');
                     cardDiv.setAttribute('id', 'card_' + card.id);
                     cardDiv.setAttribute('data-order', card.order);
-                    cardDiv.innerHTML = card.title;
+                    let cardText = document.createElement('span');
+                    cardText.innerHTML = card.title;
+                    cardText.setAttribute('class', 'cardtext');
+                    cardDiv.appendChild(cardText);
+                    let editSpan = document.createElement('span');
+                    editSpan.setAttribute('class', 'fas fa-edit');
+                    cardDiv.appendChild(editSpan);
                     status.appendChild(cardDiv);
+                    editSpan.addEventListener('click', dom.editCard)
                 }
             }
         }
+    },
+    editCard: function () {
+        let cardId = event.path[1].id;
+        console.log(cardId);
+        let oldCardTitle = event.path[1].firstElementChild.innerHTML;
+        console.log(oldCardTitle);
+        let cardTitle = prompt("Please enter new title", oldCardTitle);
+        dataHandler.editCard(cardId, cardTitle);
+        dom.rebuild()
     },
     appendToElement: function (elementToExtend, textToAppend, prepend = false) {
         // function to append new DOM elements (represented by a string) to an existing DOM element
@@ -133,7 +149,7 @@ let dom = {
                 let cardId = event.target.id;
                 let statusId = document.getElementById(cardId).parentElement.id;
                 if (statusId.slice(0, 3) === 'del') {
-                    let confirmation = confirm("Do you want to delete this card?")
+                    let confirmation = confirm("Do you want to delete this card?");
                     if (confirmation) {
                         dataHandler.deleteCard(cardId);
                         el.remove();
@@ -144,7 +160,7 @@ let dom = {
                     dataHandler.saveCard(cardId, statusId);
                 }
             }).on('dragend', function (el) {
-                dataHandler.saveCards()
+                dataHandler.saveCards(el)
         });
 
     },

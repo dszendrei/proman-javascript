@@ -43,17 +43,20 @@ body {
     border-width: 1px;
     border-color: black;
     text-align: left;
+    display: flow-root;
+    clear: both;
 }
 
 .card:hover {
     background-color: rgba(192,206,221,0.92);
+    cursor: grab;
 }
 
 .delete {
     position: relative;
 }
 
-.fas {
+.fa-trash-alt {
     font-size: xx-large;
     position: absolute;
     top: 50%;
@@ -61,4 +64,13 @@ body {
     height: 30%;
     width: 50%;
     margin: -8% 0 0 -25%;
+}
+
+.fa-edit {
+    float: right;
+    cursor: pointer;
+}
+
+.cardtext {
+    float: left;
 }

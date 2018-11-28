@@ -68,8 +68,8 @@ let dataHandler = {
         }
         this._saveData();
     },
-    saveCards: function () {
-        let cards = document.getElementsByClassName('card');
+    saveCards: function (el) {
+        let cards = el.parentElement.children;
         let order = 0;
         for (let oneOfTheCards of cards) {
             order += 1;
@@ -85,10 +85,17 @@ let dataHandler = {
     deleteCard: function (cardId) {
         for (let i = 0; i < this._data.cards.length-1; i++) {
             if (String(this._data.cards[i].id) === cardId.replace('card_', '')) {
-                this._data.cards.splice(i, 1);;
+                this._data.cards.splice(i, 1);
             }
         }
         this._saveData();
+    },
+    editCard: function (cardId, cardTitle) {
+        for (let card of this._data.cards){
+            if (String(card.id) === cardId.replace('card_', '')) {
+                card.title = cardTitle
+            }
+        }
     },
     saveNewBoard: function (title) {
         let boardId = 0;
