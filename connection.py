@@ -26,6 +26,18 @@ def select_cards_by_board(cursor, user_id, board_id):
 
 
 @database_common.connection_handler
+def select_cards_by_status(cursor, user_id, board_id, status_id):
+    cursor.execute('''
+                    SELECT id, title, status_id, card_order, 
+                    FROM cards
+                    WHERE user_id = %(user_id)s AND board_id = %(board_id)s AND status_id = %(status_id)s;
+                    ''',
+                   {'user_id': user_id, 'board_id': board_id, 'status_id': status_id})
+    cards = cursor.fetchall()
+    return cards
+
+
+@database_common.connection_handler
 def insert_new_user(cursor, username, password):
     cursor.execute('''
                     INSERT INTO users (username, password)
