@@ -16,9 +16,9 @@ def select_boards_by_user(cursor, user_id):
 @database_common.connection_handler
 def select_cards_by_board(cursor, user_id, board_id):
     cursor.execute('''
-                    SELECT cards.id, cards.title, cards.status_id
+                    SELECT id, title, status_id, card_order
                     FROM cards
-                    WHERE cards.user_id = %(user_id)s AND cards.board_id = %(board_id)s;
+                    WHERE user_id = %(user_id)s AND board_id = %(board_id)s;
                     ''',
                    {'user_id': user_id, 'board_id': board_id})
     cards = cursor.fetchall()

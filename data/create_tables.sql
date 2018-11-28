@@ -22,6 +22,7 @@ CREATE TABLE cards (
   id serial NOT NULL,
   title varchar,
   status_id integer,
+  card_order integer,
   board_id integer,
   user_id integer,
   PRIMARY KEY (id),
@@ -41,20 +42,20 @@ INSERT INTO boards (id, title, is_active, user_id)
 INSERT INTO boards (id, title, is_active, user_id)
   VALUES (2, 'Test Board 2', FALSE, 2);
 
-INSERT INTO cards (id, title, status_id, board_id, user_id)
-  VALUES (1, 'Task 1', 1, 1, 1);
+INSERT INTO cards (id, title, status_id, card_order, board_id, user_id)
+  VALUES (1, 'Task 1', 1, 1, 1, 1);
 
-INSERT INTO cards (id, title, status_id, board_id, user_id)
-  VALUES (2, 'Task 2', 1, 1, 1);
+INSERT INTO cards (id, title, status_id, card_order, board_id, user_id)
+  VALUES (2, 'Task 2', 1, 2, 1, 1);
 
-INSERT INTO cards (id, title, status_id, board_id, user_id)
-  VALUES (3, 'Task 3', 3, 1, 1);
+INSERT INTO cards (id, title, status_id, card_order, board_id, user_id)
+  VALUES (3, 'Task 3', 3, 1, 1, 1);
 
-INSERT INTO cards (id, title, status_id, board_id, user_id)
-  VALUES (4, 'Task 4', 1, 2, 2);
+INSERT INTO cards (id, title, status_id, card_order, board_id, user_id)
+  VALUES (4, 'Task 4', 1, 1, 2, 2);
 
-INSERT INTO cards (id, title, status_id, board_id, user_id)
-  VALUES (5, 'Task 5', 2, 2, 2);
+INSERT INTO cards (id, title, status_id, card_order, board_id, user_id)
+  VALUES (5, 'Task 5', 2, 1, 2, 2);
 
-INSERT INTO cards (id, title, status_id, board_id, user_id)
-  VALUES (6, 'Task 6', 4, 2, 2);
+INSERT INTO cards (id, title, status_id, card_order, board_id, user_id)
+  VALUES (6, 'Task 6', 4, 1, 2, 2);

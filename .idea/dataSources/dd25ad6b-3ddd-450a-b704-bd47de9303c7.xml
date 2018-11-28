@@ -106,8 +106,8 @@
       <ObjectId>2200</ObjectId>
       <Comment>standard public schema</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionTimestamp>2018-11-27.13:02:34.945</IntrospectionTimestamp>
-      <IntrospectionStateNumber>4100</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2018-11-27.14:38:42.370</IntrospectionTimestamp>
+      <IntrospectionStateNumber>4117</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -154,52 +154,52 @@
       <Type>index</Type>
     </access-method>
     <sequence id="28" parent="21" name="boards_id_seq">
-      <ObjectId>19200</ObjectId>
+      <ObjectId>19276</ObjectId>
       <Owner>frei</Owner>
-      <StateNumber>4099</StateNumber>
+      <StateNumber>4116</StateNumber>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
       <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
       <DataType>integer</DataType>
     </sequence>
     <sequence id="29" parent="21" name="cards_id_seq">
-      <ObjectId>19216</ObjectId>
+      <ObjectId>19292</ObjectId>
       <Owner>frei</Owner>
-      <StateNumber>4100</StateNumber>
+      <StateNumber>4117</StateNumber>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
       <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
       <DataType>integer</DataType>
     </sequence>
     <sequence id="30" parent="21" name="users_id_seq">
-      <ObjectId>19189</ObjectId>
+      <ObjectId>19265</ObjectId>
       <Owner>frei</Owner>
-      <StateNumber>4098</StateNumber>
+      <StateNumber>4115</StateNumber>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
       <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
       <DataType>integer</DataType>
     </sequence>
     <table id="31" parent="21" name="boards">
-      <ObjectId>19202</ObjectId>
+      <ObjectId>19278</ObjectId>
       <Owner>frei</Owner>
-      <StateNumber>4100</StateNumber>
+      <StateNumber>4117</StateNumber>
     </table>
     <table id="32" parent="21" name="cards">
-      <ObjectId>19218</ObjectId>
+      <ObjectId>19294</ObjectId>
       <Owner>frei</Owner>
-      <StateNumber>4100</StateNumber>
+      <StateNumber>4117</StateNumber>
     </table>
     <table id="33" parent="21" name="users">
-      <ObjectId>19191</ObjectId>
+      <ObjectId>19267</ObjectId>
       <Owner>frei</Owner>
-      <StateNumber>4100</StateNumber>
+      <StateNumber>4117</StateNumber>
     </table>
     <column id="34" parent="31" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>4099</StateNumber>
+      <StateNumber>4116</StateNumber>
       <DefaultExpression>nextval(&apos;boards_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
       <SequenceName>boards_id_seq</SequenceName>
@@ -207,36 +207,36 @@
     <column id="35" parent="31" name="title">
       <Position>2</Position>
       <DataType>varchar|0s</DataType>
-      <StateNumber>4099</StateNumber>
+      <StateNumber>4116</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="36" parent="31" name="is_active">
       <Position>3</Position>
       <DataType>boolean|0s</DataType>
-      <StateNumber>4099</StateNumber>
+      <StateNumber>4116</StateNumber>
       <TypeId>16</TypeId>
     </column>
     <column id="37" parent="31" name="user_id">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
-      <StateNumber>4099</StateNumber>
+      <StateNumber>4116</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="38" parent="31" name="boards_pkey">
-      <ObjectId>19209</ObjectId>
+      <ObjectId>19285</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="39" parent="31" name="boards_pkey">
-      <ObjectId>19210</ObjectId>
+      <ObjectId>19286</ObjectId>
       <ColNames>id</ColNames>
       <UnderlyingIndexName>boards_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <foreign-key id="40" parent="31" name="boards_user_id_fkey">
-      <ObjectId>19211</ObjectId>
+      <ObjectId>19287</ObjectId>
       <ColNames>user_id</ColNames>
-      <RefTableId>19191</RefTableId>
+      <RefTableId>19267</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>users</RefTableName>
       <RefKeyName>users_pkey</RefKeyName>
@@ -246,7 +246,7 @@
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>4100</StateNumber>
+      <StateNumber>4117</StateNumber>
       <DefaultExpression>nextval(&apos;cards_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
       <SequenceName>cards_id_seq</SequenceName>
@@ -254,84 +254,90 @@
     <column id="42" parent="32" name="title">
       <Position>2</Position>
       <DataType>varchar|0s</DataType>
-      <StateNumber>4100</StateNumber>
+      <StateNumber>4117</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="43" parent="32" name="status_id">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
-      <StateNumber>4100</StateNumber>
+      <StateNumber>4117</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="44" parent="32" name="board_id">
+    <column id="44" parent="32" name="card_order">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
-      <StateNumber>4100</StateNumber>
+      <StateNumber>4117</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="45" parent="32" name="user_id">
+    <column id="45" parent="32" name="board_id">
       <Position>5</Position>
       <DataType>integer|0s</DataType>
-      <StateNumber>4100</StateNumber>
+      <StateNumber>4117</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="46" parent="32" name="cards_pkey">
-      <ObjectId>19225</ObjectId>
+    <column id="46" parent="32" name="user_id">
+      <Position>6</Position>
+      <DataType>integer|0s</DataType>
+      <StateNumber>4117</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <index id="47" parent="32" name="cards_pkey">
+      <ObjectId>19301</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="47" parent="32" name="cards_pkey">
-      <ObjectId>19226</ObjectId>
+    <key id="48" parent="32" name="cards_pkey">
+      <ObjectId>19302</ObjectId>
       <ColNames>id</ColNames>
       <UnderlyingIndexName>cards_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="48" parent="32" name="cards_board_id_fkey">
-      <ObjectId>19227</ObjectId>
+    <foreign-key id="49" parent="32" name="cards_board_id_fkey">
+      <ObjectId>19303</ObjectId>
       <ColNames>board_id</ColNames>
-      <RefTableId>19202</RefTableId>
+      <RefTableId>19278</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>boards</RefTableName>
       <RefKeyName>boards_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="49" parent="32" name="cards_user_id_fkey">
-      <ObjectId>19232</ObjectId>
+    <foreign-key id="50" parent="32" name="cards_user_id_fkey">
+      <ObjectId>19308</ObjectId>
       <ColNames>user_id</ColNames>
-      <RefTableId>19191</RefTableId>
+      <RefTableId>19267</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>users</RefTableName>
       <RefKeyName>users_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="50" parent="33" name="id">
+    <column id="51" parent="33" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>4098</StateNumber>
+      <StateNumber>4115</StateNumber>
       <DefaultExpression>nextval(&apos;users_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
       <SequenceName>users_id_seq</SequenceName>
     </column>
-    <column id="51" parent="33" name="username">
+    <column id="52" parent="33" name="username">
       <Position>2</Position>
       <DataType>varchar(10)|0s</DataType>
-      <StateNumber>4098</StateNumber>
+      <StateNumber>4115</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="52" parent="33" name="password">
+    <column id="53" parent="33" name="password">
       <Position>3</Position>
       <DataType>varchar|0s</DataType>
-      <StateNumber>4098</StateNumber>
+      <StateNumber>4115</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="53" parent="33" name="users_pkey">
-      <ObjectId>19198</ObjectId>
+    <index id="54" parent="33" name="users_pkey">
+      <ObjectId>19274</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="54" parent="33" name="users_pkey">
-      <ObjectId>19199</ObjectId>
+    <key id="55" parent="33" name="users_pkey">
+      <ObjectId>19275</ObjectId>
       <ColNames>id</ColNames>
       <UnderlyingIndexName>users_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
