@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div id="navi-tab">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+              <a class="nav-link active" id="log-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" id="reg-tab" data-toggle="tab" href="#registration" role="tab" aria-controls="registration" aria-selected="false">Registration</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="login" role="tabpanel">
+                <div class="login">
+                    <form action="{{ url_for('login') }}" id="login-form" method="POST" autocomplete="off">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="login-username" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="login-password" placeholder="Password" name="password">
+                        </div>
+                        <button id="login-btn" type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    {% with messages = get_flashed_messages(category_filter=["login"]) %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <h3>{{ message }}</h3>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div class="tab-pane fade" id="registration" role="tabpanel">
+                <div class="registration" id="registration-form">
+                    <form id="registration-form" action="{{ url_for('registration') }}" method="POST" autocomplete="off">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="reg-username" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="reg-password" placeholder="Password" name="password">
+                        </div>
+                        <button id="registration-btn" type="submit" class="btn btn-primary">Registration</button>
+                    </form>
+                    {% with messages = get_flashed_messages(category_filter=["signup"]) %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <h3>{{ message }}</h3>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

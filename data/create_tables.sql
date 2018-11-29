@@ -59,3 +59,11 @@ INSERT INTO cards (id, title, status_id, card_order, board_id, user_id)
 
 INSERT INTO cards (id, title, status_id, card_order, board_id, user_id)
   VALUES (6, 'Task 6', 4, 1, 2, 2);
+
+ALTER SEQUENCE users_id_seq START WITH 3;
+ALTER SEQUENCE boards_id_seq START WITH 3;
+ALTER SEQUENCE cards_id_seq START WITH 7;
+
+ALTER SEQUENCE users_id_seq RESTART WITH 3;
+ALTER SEQUENCE boards_id_seq RESTART WITH 3;
+ALTER SEQUENCE cards_id_seq RESTART WITH 7;

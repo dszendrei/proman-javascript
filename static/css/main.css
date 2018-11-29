@@ -91,3 +91,21 @@ body {
     cursor: pointer;
     margin-right: 10px;
 }
+
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#navi-tab {
+    margin: auto;
+    width: 300px;
+}
+
+#logout {
+    position: absolute;
+    top: 5%;
+    left: 95%;
+    margin-right: -95%;
+    transform: translate(-5%, -95%)
+}
