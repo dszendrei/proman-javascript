@@ -6,24 +6,77 @@
 let dataHandler = {
     keyInLocalStorage: 'proman-data', // the string that you use as a key in localStorage to save your application data
     _data: {}, // it contains the boards and their cards and statuses. It is not called from outside.
-    _loadData: function () {
+    _loadData: function (usersData) {
         // it is not called from outside
         // loads data from local storage, parses it and put into this._data property
-        let localData = localStorage.getItem(this.keyInLocalStorage);
-        this._data = JSON.parse(localData);
+        //let localData = localStorage.getItem(this.keyInLocalStorage);
+        //this._data = JSON.parse(localData);
+        console.log(usersData);
+        this._data = usersData
     },
     _saveData: function () {
         // it is not called from outside
         // saves the data from this._data to local storage
-        localStorage.setItem(this.keyInLocalStorage, JSON.stringify(this._data));
+        //localStorage.setItem(this.keyInLocalStorage, JSON.stringify(this._data));
     },
     init: function () {
         this._loadData();
+    },
+    getUsersData: function (callback, userId=1) {
+        let usersData = {};
+        fetch("/data-handling/boards", {method: 'POST', body: JSON.stringify({user_id: userId}), headers: {'Content-Type': 'application/json'}})
+        .then(
+            function(response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
+                }
+                response.json().then(function(data) {
+                    usersData = Object.assign({boards: data.data}, usersData);
+                    fetch("/data-handling/cards", {method: 'POST', body: JSON.stringify({user_id: userId}), headers: {'Content-Type': 'application/json'}})
+                    .then(
+                        function(response) {
+                            if (response.status !== 200) {
+                                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                                return;
+                            }
+                            response.json().then(function(data) {
+                                usersData = Object.assign({cards: data.data}, usersData);
+                                console.log(usersData);
+                                data_handler._loadData(usersData)
+                            });
+                        }
+                    );
+                });
+            }
+        )
     },
     getBoards: function (callback) {
         // the boards are retrieved and then the callback function is called with the boards
         let boards = this._data.boards;
         callback(boards);
+    },
+    editBoard: function (boardId, boardTitle) {
+        for (let board of this._data.boards){
+            if (String(board.id) === boardId.replace('board_', '')) {
+                board.title = boardTitle
+            }
+        }
+    },
+    deleteBoard: function (boardId) {
+
+        for (let card of this._data.cards) {
+            if (card.board_id == boardId) {
+                dataHandler.deleteCard(card.id)
+            }
+        }
+
+        for (let i = 0; i < this._data.boards.length; i++) {
+            if (String(this._data.boards[i].id) == boardId) {
+                this._data.boards.splice(i, 1);
+            }
+        }
+        this._saveData();
     },
     getBoard: function (boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
@@ -68,27 +121,41 @@ let dataHandler = {
         }
         this._saveData();
     },
-    saveCards: function () {
-        let cards = document.getElementsByClassName('card');
-        let order = 0;
-        for (let oneOfTheCards of cards) {
-            order += 1;
-            for (let card of this._data.cards) {
-                if (String(card.id) === oneOfTheCards.id.replace('card_', '')) {
-                    card.status_id = Number(oneOfTheCards.parentElement.id.replace('status_', ''));
-                    card.order = order;
+    saveCards: function (el) {
+        let deletedCardId = el.id.replace('card_', '');
+        for (let card of this._data.cards) {
+            if (deletedCardId == card.id) {
+                let boardOfDelCardId = card.board_id;
+                let boardOfDelCard = document.getElementById(boardOfDelCardId);
+                let cards = boardOfDelCard.children;
+                let order = 0;
+                for (let oneOfTheCards of cards) {
+                    order += 1;
+                    for (let card of this._data.cards) {
+                        if (String(card.id) === oneOfTheCards.id.replace('card_', '')) {
+                            card.status_id = Number(oneOfTheCards.parentElement.id.replace('status_', ''));
+                            card.order = order;
+                        }
+                    }
+                    this._saveData();
                 }
             }
-            this._saveData();
-        }
+            }
     },
     deleteCard: function (cardId) {
-        for (let i = 0; i < this._data.cards.length-1; i++) {
-            if (String(this._data.cards[i].id) === cardId.replace('card_', '')) {
-                this._data.cards.splice(i, 1);;
+        for (let i = 0; i < this._data.cards.length; i++) {
+            if (this._data.cards[i].id == cardId) {
+                this._data.cards.splice(i, 1);
             }
         }
         this._saveData();
+    },
+    editCard: function (cardId, cardTitle) {
+        for (let card of this._data.cards){
+            if (String(card.id) === cardId.replace('card_', '')) {
+                card.title = cardTitle
+            }
+        }
     },
     saveNewBoard: function (title) {
         let boardId = 0;
