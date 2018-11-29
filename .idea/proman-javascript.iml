@@ -9,6 +9,8 @@
     </content>
     <orderEntry type="jdk" jdkName="Python 3.6 (proman-javascript)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="handlebars-v4.0.12.js" level="project" />
+    <orderEntry type="library" name="@types/jquery" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
