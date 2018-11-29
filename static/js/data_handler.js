@@ -25,6 +25,19 @@ let dataHandler = {
         let boards = this._data.boards;
         callback(boards);
     },
+    deleteBoard: function (boardId) {
+        for (let card of this._data.cards) {
+            if (String(card.board_id) == boardId) {
+                dataHandler.deleteCard(card.id)
+            }
+        }
+        for (let i = 0; i < this._data.boards.length-1; i++) {
+            if (String(this._data.boards[i].id) == boardId) {
+                this._data.boards.splice(i, 1);
+            }
+        }
+        this._saveData();
+    },
     getBoard: function (boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
 
@@ -83,8 +96,11 @@ let dataHandler = {
         }
     },
     deleteCard: function (cardId) {
+        console.log('1');
         for (let i = 0; i < this._data.cards.length-1; i++) {
-            if (String(this._data.cards[i].id) === cardId.replace('card_', '')) {
+            console.log('2');
+            if (String(this._data.cards[i].id) === String(cardId)) {
+                console.log('3');
                 this._data.cards.splice(i, 1);
             }
         }
