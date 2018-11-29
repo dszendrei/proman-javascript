@@ -35,7 +35,18 @@ def login():
 
 @app.route('/registration', methods=['POST'])
 def registration():
-    pass
+    username = request.form['username']
+    password = request.form['password']
+
+    if data_manager.register_new_user(username, password):
+        session['username'] = username
+        user_id = data_manager.get_user_id(session['username'])
+        session['user_id'] = user_id
+        session.pop('_flashes', None)
+        return redirect(url_for('boards'))
+    else:
+        flash(u'This username is already taken.', 'signup')
+        return redirect(url_for('index'))
 
 
 def main():
