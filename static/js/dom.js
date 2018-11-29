@@ -45,7 +45,11 @@ let dom = {
         dom.rebuild()
     },
     editBoard: function () {
-
+        let boardId = event.path[1].id;
+        let oldBoardTitle = event.path[1].firstElementChild.innerHTML;
+        let boardTitle = prompt("Please enter new title", oldBoardTitle);
+        dataHandler.editBoard(boardId, boardTitle);
+        dom.rebuild()
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
