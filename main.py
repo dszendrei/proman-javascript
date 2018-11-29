@@ -49,6 +49,12 @@ def registration():
         return redirect(url_for('index'))
 
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+
 def main():
     app.secret_key = os.urandom(24)
     app.run(debug=True)

@@ -71,3 +71,11 @@ h1 {
     margin: auto;
     width: 300px;
 }
+
+#logout {
+    position: absolute;
+    top: 5%;
+    left: 95%;
+    margin-right: -95%;
+    transform: translate(-5%, -95%)
+}
