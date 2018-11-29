@@ -15,12 +15,41 @@ let dom = {
             divByBoard.setAttribute('class', 'container');
             divByBoard.setAttribute('data-dropped', 'false');
             boardsDiv.appendChild(divByBoard);
-            divByBoard.innerHTML = board.title;
-            divByBoard.addEventListener("click", dom.dropping);
+            boardTitle = document.createElement('span');
+            boardTitle.innerHTML = board.title;
+            divByBoard.appendChild(boardTitle);
+            let deleteBtn = document.createElement('span');
+            deleteBtn.setAttribute('class', 'fas fa-trash-alt boardDelete');
+            divByBoard.appendChild(deleteBtn);
+            deleteBtn.addEventListener('click', dom.deleteBoard);
+            let editBtn = document.createElement('span');
+            editBtn.setAttribute('class', 'fas fa-edit boardEdit');
+            divByBoard.appendChild(editBtn);
+            editBtn.addEventListener('click', dom.editBoard);
+            let dropBtn = document.createElement('span');
+            dropBtn.setAttribute('class', 'fas fa-caret-down dropBtn');
+            divByBoard.appendChild(dropBtn);
+            dropBtn.addEventListener("click", dom.dropping);
             if (board.is_active) {
-                divByBoard.click();
+                dropBtn.click();
                 }
             }
+    },
+    deleteBoard: function () {
+        let boardId = event.path[1].id.replace('board_', '');
+        let boardTitle = event.path[1].firstElementChild.innerHTML;
+        let confirmation = confirm("Do you want to delete "+boardTitle+'?');
+        if (confirmation) {
+            dataHandler.deleteBoard(boardId)
+        }
+        dom.rebuild()
+    },
+    editBoard: function () {
+        let boardId = event.path[1].id;
+        let oldBoardTitle = event.path[1].firstElementChild.innerHTML;
+        let boardTitle = prompt("Please enter new title", oldBoardTitle);
+        dataHandler.editBoard(boardId, boardTitle);
+        dom.rebuild()
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
@@ -30,23 +59,38 @@ let dom = {
 
         // shows the cards of a board
         // it adds necessary event listeners also
-        let rowId = event.target.id.replace('board_', 'row_');
+        let dropBtn = event.target;
+        let rowId = dropBtn.parentElement.id.replace('board_', 'row_');
         let row = document.getElementById(rowId);
         let order = 0;
         for (let i = 0; i < numberOfCards; i++) {
             order += 1;
             for (let card of cards) {
                 if (card.order === order){
-                    let status = event.target.childNodes[2].childNodes[card.status_id-1];
+                    let status = dropBtn.parentElement.childNodes[5].childNodes[card.status_id-1];
                     let cardDiv = document.createElement('div');
                     cardDiv.setAttribute('class', 'card');
                     cardDiv.setAttribute('id', 'card_' + card.id);
                     cardDiv.setAttribute('data-order', card.order);
-                    cardDiv.innerHTML = card.title;
+                    let cardText = document.createElement('span');
+                    cardText.innerHTML = card.title;
+                    cardText.setAttribute('class', 'cardtext');
+                    cardDiv.appendChild(cardText);
+                    let editSpan = document.createElement('span');
+                    editSpan.setAttribute('class', 'fas fa-edit cardEdit');
+                    cardDiv.appendChild(editSpan);
                     status.appendChild(cardDiv);
+                    editSpan.addEventListener('click', dom.editCard)
                 }
             }
         }
+    },
+    editCard: function () {
+        let cardId = event.path[1].id;
+        let oldCardTitle = event.path[1].firstElementChild.innerHTML;
+        let cardTitle = prompt("Please enter new title", oldCardTitle);
+        dataHandler.editCard(cardId, cardTitle);
+        dom.rebuild()
     },
     appendToElement: function (elementToExtend, textToAppend, prepend = false) {
         // function to append new DOM elements (represented by a string) to an existing DOM element
@@ -68,7 +112,8 @@ let dom = {
         dataHandler.getStatuses(this.showStatuses)
     },
     showStatuses: function(statuses) {
-        let boardId = event.target.id;
+        let dropBtn = event.target;
+        let boardId = dropBtn.parentElement.id;
         let board = document.getElementById(boardId);
         let row = document.createElement("div");
         row.setAttribute('class', 'row');
@@ -89,18 +134,21 @@ let dom = {
         board.dataset.dropped = 'true';
     },
     dropping: function() {
-        let board = document.getElementById(this.id);
+        let dropBtn = this;
+        let board = document.getElementById(this.parentElement.id);
         let dropped = board.dataset.dropped;
         if (dropped === 'false'){
-            dom.createInput(this.id, dom.addCard, 'card');
-            dom.loadStatuses(this.id.replace('board_', ''));
-            dom.loadCards(this.id.replace('board_', ''));
+            dom.createInput(this.parentElement.id, dom.addCard, 'card');
+            dom.loadStatuses(this.parentElement.id.replace('board_', ''));
+            dom.loadCards(this.parentElement.id.replace('board_', ''));
             dom.placeDagula();
-            dom.addDeleteLogo(this.id);
-            dataHandler.saveDroppedStatus(this.id.replace('board_', ''), true);
-        } else if (event.target.parentElement.id === "boards") {
-            dom.hideCards(this.id.replace('board_', ''));
-            dataHandler.saveDroppedStatus(this.id.replace('board_', ''), false);
+            dom.addDeleteLogo(this.parentElement.id);
+            dataHandler.saveDroppedStatus(this.parentElement.id.replace('board_', ''), true);
+            dropBtn.setAttribute('class', 'fas fa-caret-down dropBtn')
+        } else if (dropBtn.parentElement.parentElement.id === "boards") {
+            dom.hideCards(this.parentElement.id.replace('board_', ''));
+            dataHandler.saveDroppedStatus(this.parentElement.id.replace('board_', ''), false);
+            dropBtn.setAttribute('class', 'fas fa-caret-left dropBtn')
         }
 
     },
@@ -109,7 +157,7 @@ let dom = {
         for (let deleteCol of deleteCols) {
             if (deleteCol.id.replace('delete_', '') === boardId.replace('board_', '')) {
                 let deleteLogo = document.createElement('i');
-                deleteLogo.setAttribute('class', "fas fa-trash-alt");
+                deleteLogo.setAttribute('class', "fas fa-trash-alt cardDelete");
                 deleteCol.appendChild(deleteLogo);
             }
         }
@@ -124,18 +172,19 @@ let dom = {
         board.dataset.dropped = 'false';
     },
     placeDagula: function () {
-        let statuses = Array.from(event.target.lastElementChild.childNodes);
+        let dropBtn = event.target;
+        let statuses = Array.from(dropBtn.parentElement.lastElementChild.childNodes);
         let drake = dragula(statuses, {
             revertOnSpill: true,
             invalid: function (el) {
                 return el.classList.contains("fa-trash-alt")}});
         drake.on('drop', function (el, target, source, sibling) {
-                let cardId = event.target.id;
+                let cardId = el.id;
                 let statusId = document.getElementById(cardId).parentElement.id;
                 if (statusId.slice(0, 3) === 'del') {
-                    let confirmation = confirm("Do you want to delete this card?")
+                    let confirmation = confirm("Do you want to delete this card?");
                     if (confirmation) {
-                        dataHandler.deleteCard(cardId);
+                        dataHandler.deleteCard(cardId.replace('card_', ''));
                         el.remove();
                     } else {
                         dom.rebuild();
@@ -144,7 +193,7 @@ let dom = {
                     dataHandler.saveCard(cardId, statusId);
                 }
             }).on('dragend', function (el) {
-                dataHandler.saveCards()
+                dataHandler.saveCards(el)
         });
 
     },

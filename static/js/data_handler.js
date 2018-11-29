@@ -25,6 +25,28 @@ let dataHandler = {
         let boards = this._data.boards;
         callback(boards);
     },
+    editBoard: function (boardId, boardTitle) {
+        for (let board of this._data.boards){
+            if (String(board.id) === boardId.replace('board_', '')) {
+                board.title = boardTitle
+            }
+        }
+    },
+    deleteBoard: function (boardId) {
+
+        for (let card of this._data.cards) {
+            if (card.board_id == boardId) {
+                dataHandler.deleteCard(card.id)
+            }
+        }
+
+        for (let i = 0; i < this._data.boards.length; i++) {
+            if (String(this._data.boards[i].id) == boardId) {
+                this._data.boards.splice(i, 1);
+            }
+        }
+        this._saveData();
+    },
     getBoard: function (boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
 
@@ -68,27 +90,41 @@ let dataHandler = {
         }
         this._saveData();
     },
-    saveCards: function () {
-        let cards = document.getElementsByClassName('card');
-        let order = 0;
-        for (let oneOfTheCards of cards) {
-            order += 1;
-            for (let card of this._data.cards) {
-                if (String(card.id) === oneOfTheCards.id.replace('card_', '')) {
-                    card.status_id = Number(oneOfTheCards.parentElement.id.replace('status_', ''));
-                    card.order = order;
+    saveCards: function (el) {
+        let deletedCardId = el.id.replace('card_', '');
+        for (let card of this._data.cards) {
+            if (deletedCardId == card.id) {
+                let boardOfDelCardId = card.board_id;
+                let boardOfDelCard = document.getElementById(boardOfDelCardId);
+                let cards = boardOfDelCard.children;
+                let order = 0;
+                for (let oneOfTheCards of cards) {
+                    order += 1;
+                    for (let card of this._data.cards) {
+                        if (String(card.id) === oneOfTheCards.id.replace('card_', '')) {
+                            card.status_id = Number(oneOfTheCards.parentElement.id.replace('status_', ''));
+                            card.order = order;
+                        }
+                    }
+                    this._saveData();
                 }
             }
-            this._saveData();
-        }
+            }
     },
     deleteCard: function (cardId) {
-        for (let i = 0; i < this._data.cards.length-1; i++) {
-            if (String(this._data.cards[i].id) === cardId.replace('card_', '')) {
-                this._data.cards.splice(i, 1);;
+        for (let i = 0; i < this._data.cards.length; i++) {
+            if (this._data.cards[i].id == cardId) {
+                this._data.cards.splice(i, 1);
             }
         }
         this._saveData();
+    },
+    editCard: function (cardId, cardTitle) {
+        for (let card of this._data.cards){
+            if (String(card.id) === cardId.replace('card_', '')) {
+                card.title = cardTitle
+            }
+        }
     },
     saveNewBoard: function (title) {
         let boardId = 0;
