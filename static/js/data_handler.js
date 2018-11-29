@@ -33,11 +33,13 @@ let dataHandler = {
         }
     },
     deleteBoard: function (boardId) {
+
         for (let card of this._data.cards) {
             if (card.board_id == boardId) {
                 dataHandler.deleteCard(card.id)
             }
         }
+
         for (let i = 0; i < this._data.boards.length; i++) {
             if (String(this._data.boards[i].id) == boardId) {
                 this._data.boards.splice(i, 1);
@@ -110,7 +112,7 @@ let dataHandler = {
             }
     },
     deleteCard: function (cardId) {
-        for (let i = 0; i < this._data.cards.length-1; i++) {
+        for (let i = 0; i < this._data.cards.length; i++) {
             if (this._data.cards[i].id == cardId) {
                 this._data.cards.splice(i, 1);
             }

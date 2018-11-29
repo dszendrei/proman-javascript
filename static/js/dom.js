@@ -179,7 +179,7 @@ let dom = {
             invalid: function (el) {
                 return el.classList.contains("fa-trash-alt")}});
         drake.on('drop', function (el, target, source, sibling) {
-                let cardId = event.target.id;
+                let cardId = el.id;
                 let statusId = document.getElementById(cardId).parentElement.id;
                 if (statusId.slice(0, 3) === 'del') {
                     let confirmation = confirm("Do you want to delete this card?");
